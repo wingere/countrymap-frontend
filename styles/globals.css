@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS for Leaflet and Minecraft styling */
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-white dark:bg-dark-900 text-dark-900 dark:text-dark-100;
+  }
+}
+
+@layer components {
+  /* Leaflet map styling */
+  .leaflet-container {
+    @apply bg-primary-50 dark:bg-dark-800;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  .leaflet-popup-content-wrapper {
+    @apply bg-white dark:bg-dark-800 text-dark-900 dark:text-dark-100;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .leaflet-popup-tip {
+    @apply bg-white dark:bg-dark-800;
+  }
+  
+  .leaflet-control {
+    @apply bg-white dark:bg-dark-800 border-dark-200 dark:border-dark-600;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .leaflet-control a {
+    @apply text-dark-700 dark:text-dark-200 hover:text-primary-600 dark:hover:text-primary-400;
+  }
+  
+  /* Custom map controls */
+  .map-control-panel {
+    @apply bg-white dark:bg-dark-800 border border-dark-200 dark:border-dark-600 
+           rounded-lg shadow-lg p-4 m-2;
+  }
+  
+  .map-button {
+    @apply bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg
+           transition-colors duration-200 font-medium;
+  }
+  
+  .map-button:disabled {
+    @apply bg-dark-300 dark:bg-dark-600 text-dark-500 dark:text-dark-400 cursor-not-allowed;
+  }
+  
+  .map-toggle {
+    @apply bg-white dark:bg-dark-700 border border-dark-300 dark:border-dark-600
+           rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200;
+  }
+  
+  .map-toggle.active {
+    @apply bg-primary-500 text-white border-primary-500;
+  }
+  
+  /* Player markers */
+  .player-marker {
+    border-radius: 4px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+  }
+  
+  .player-marker:hover {
+    transform: scale(1.1);
+    z-index: 1000;
+  }
+  
+  /* Country territories */
+  .country-territory {
+    fill-opacity: 0.3;
+    stroke-width: 2;
+    stroke-opacity: 0.8;
+    transition: all 0.2s ease;
+  }
+  
+  .country-territory:hover {
+    fill-opacity: 0.5;
+    stroke-width: 3;
+  }
+  
+  /* War zones */
+  .war-zone {
+    fill: #ff5722;
+    fill-opacity: 0.2;
+    stroke: #ff5722;
+    stroke-width: 2;
+    stroke-dasharray: 5, 5;
+    animation: pulse 2s infinite;
+  }
+  
+  /* Loading states */
+  .loading-skeleton {
+    @apply bg-dark-200 dark:bg-dark-700 animate-pulse rounded;
+  }
+  
+  /* Notifications */
+  .notification {
+    @apply bg-white dark:bg-dark-800 border-l-4 border-primary-500 
+           shadow-lg rounded-lg p-4 mb-4 animate-slide-up;
+  }
+  
+  .notification.war {
+    @apply border-red-500;
+  }
+  
+  .notification.country {
+    @apply border-primary-500;
+  }
+  
+  .notification.player {
+    @apply border-secondary-500;
+  }
+}
+
+@layer utilities {
+  /* Minecraft-style pixelated images */
+  .pixelated {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Glass effect */
+  .glass {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .glass-dark {
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-100 dark:bg-dark-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-400 dark:bg-dark-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-dark-500 dark:bg-dark-500;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
