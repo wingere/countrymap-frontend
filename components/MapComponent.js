@@ -247,9 +247,7 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
       // Add popup with player info
       const popupContent = `
         <div class="p-4 text-center" style="min-width: 200px;">
-          <div class="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center text-white text-2xl font-bold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">
-            ${player.name.charAt(0).toUpperCase()}
-          </div>
+          <div class="mx-auto mb-3" style="width: 64px; height: 64px; background-image: url('https://mc-heads.net/avatar/steve/64'); background-size: cover; border-radius: 8px; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2);"></div>
           <h3 class="font-bold text-xl mb-2" style="color: #2d3748;">${player.name}</h3>
           ${player.country ? `<p class="mb-1" style="color: #4a5568;"><strong>🏰 Страна:</strong> ${player.country}</p>` : ''}
           ${player.isPresident ? `<p class="text-yellow-600 font-semibold mb-2">👑 Президент</p>` : ''}
