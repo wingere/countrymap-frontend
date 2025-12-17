@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: [
-      'countrymap.herokuapp.com',
+      'countrymap-backend-fixed-production.up.railway.app',
       'minotar.net',
       'crafatar.com',
       'mc-heads.net'
@@ -12,14 +12,14 @@ const nextConfig = {
     unoptimized: true
   },
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://countrymap.herokuapp.com',
-    NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL || 'wss://countrymap.herokuapp.com'
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://countrymap-backend-fixed-production.up.railway.app',
+    NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL || 'wss://countrymap-backend-fixed-production.up.railway.app'
   },
   async rewrites() {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://countrymap.herokuapp.com'}/api/:path*`
+        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://countrymap-backend-fixed-production.up.railway.app'}/api/:path*`
       }
     ];
   }

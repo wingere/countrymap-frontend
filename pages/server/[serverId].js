@@ -31,7 +31,7 @@ export default function ServerPage({ initialData, serverId }) {
   useEffect(() => {
     if (!serverId) return;
 
-    const socketInstance = io(process.env.NEXT_PUBLIC_WS_URL || 'wss://countrymap.herokuapp.com', {
+    const socketInstance = io(process.env.NEXT_PUBLIC_WS_URL || 'wss://countrymap-backend-fixed-production.up.railway.app', {
       transports: ['websocket', 'polling']
     });
 
@@ -263,7 +263,7 @@ export async function getServerSideProps({ params }) {
 
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL || 'https://countrymap.herokuapp.com'}/api/servers/${serverId}/data`
+      `${process.env.NEXT_PUBLIC_API_URL || 'https://countrymap-backend-fixed-production.up.railway.app'}/api/servers/${serverId}/data`
     );
 
     return {
