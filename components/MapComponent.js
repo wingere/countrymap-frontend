@@ -39,12 +39,36 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
     // Set initial view (will be adjusted based on server data)
     map.setView([0, 0], 2);
 
-    // Add custom tile layer (simple grid for now)
-    L.tileLayer('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', {
-      attribution: 'CountryProtect WebMap',
+    // Add real Minecraft world tiles from cloud backend
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://countrymap-backend-fixed-production.up.railway.app';
+    
+    // Try to load real tiles first, fallback to grid if not available
+    const tileLayer = L.tileLayer(`${apiUrl}/api/tiles/{serverId}/{z}/{x}/{y}.png`, {
+      attribution: 'CountryProtect WebMap - Real Minecraft World',
       tileSize: 256,
-      noWrap: true
-    }).addTo(map);
+      noWrap: true,
+      maxZoom: 6,
+      minZoom: 0,
+      errorTileUrl: 'data:image/svg+xml;base64,' + btoa(`
+        <svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#2d3748"/>
+          <defs>
+            <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#4a5568" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" opacity="0.3"/>
+          <text x="50%" y="50%" text-anchor="middle" fill="#718096" font-size="14" dy="0.3em">
+            Waiting for world tiles...
+          </text>
+        </svg>
+      `)
+    });
+    
+    // Replace {serverId} with actual serverId from props
+    const serverId = serverData?.serverInfo?.serverId || 'fa67664bd3534e8d41c4f0c9409798bf';
+    tileLayer.setUrl(`${apiUrl}/api/tiles/${serverId}/{z}/{x}/{y}.png`);
+    tileLayer.addTo(map);
 
     // Add zoom controls in custom position
     L.control.zoom({

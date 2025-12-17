@@ -1,84 +1,105 @@
-# CountryMap Frontend
+# CountryProtect WebMap - Frontend
 
-Веб-интерфейс для просмотра карт серверов CountryMap.
+Cloud frontend for CountryProtect WebMap system, deployed on Vercel.
 
-## 🚀 Развертывание
+## Features
 
-Этот проект автоматически развертывается на Vercel при push в main ветку.
+- Interactive map with Leaflet.js
+- Real-time updates via WebSocket
+- Player skin display with head markers
+- Country territory visualization
+- Responsive design with Tailwind CSS
+- Dark/light theme support
+- Mobile-friendly interface
 
-**Backend API:** https://web-production-27275.up.railway.app
+## Pages
 
-## 📋 Функции
+- `/` - Home page with server ID input
+- `/server/[serverId]` - Interactive map for specific server
 
-- 📊 Просмотр списка серверов
-- 🗺️ Интерактивная карта мира  
-- 👥 Информация об игроках
-- 🏰 Данные о странах
-- 🎨 Система скинов
-- 🔄 Обновления в реальном времени
+## Components
 
-## 🛠️ Технологии
+- `MapComponent` - Main interactive map with Leaflet.js
+- Player markers with skin heads
+- Country territory overlays
+- Layer toggle controls
+- Real-time coordinate display
 
-- **Next.js 14** - React фреймворк
-- **React 18** - UI библиотека
-- **Tailwind CSS** - CSS фреймворк
-- **Leaflet** - Интерактивные карты
-- **Socket.io** - WebSocket соединения
-
-## 🔧 Локальная разработка
-
-```bash
-# Установка зависимостей
-npm install
-
-# Запуск dev сервера
-npm run dev
-
-# Сборка для продакшена
-npm run build
-```
-
-## 🌍 Переменные окружения
+## Environment Variables
 
 ```env
-NEXT_PUBLIC_API_URL=https://web-production-27275.up.railway.app
+NEXT_PUBLIC_API_URL=https://countrymap-backend-fixed-production.up.railway.app
+NEXT_PUBLIC_WS_URL=wss://countrymap-backend-fixed-production.up.railway.app
 ```
 
-## 📦 Структура проекта
+## Deployment to Vercel
 
+1. Connect GitHub repository to Vercel
+2. Set environment variables in Vercel dashboard
+3. Deploy automatically on push to main branch
+
+## Local Development
+
+1. Install dependencies:
+```bash
+npm install
 ```
-├── components/          # React компоненты
-│   └── MapComponent.js  # Основной компонент карты
-├── pages/              # Next.js страницы
-│   ├── index.js        # Главная страница
-│   └── server/         # Страницы серверов
-├── styles/             # CSS стили
-└── public/             # Статические файлы
+
+2. Start development server:
+```bash
+npm run dev
 ```
 
-## 🗺️ Система координат
+3. Open [http://localhost:3000](http://localhost:3000)
 
-Карта использует систему координат Minecraft:
-- X ось: Восток/Запад
-- Z ось: Север/Юг
-- Y ось: Вверх/Вниз (не используется в 2D карте)
+## Features
 
-## 🎮 Функции карты
+### Interactive Map
+- Zoom and pan controls
+- Mouse coordinate tracking
+- Click to show coordinates
+- Responsive design for mobile
 
-### Интерактивная карта
-- Управление зумом и панорамированием
-- Отслеживание координат мыши
-- Клик для показа координат
-- Адаптивный дизайн для мобильных
+### Player System
+- Real-time player positions
+- Player skin head markers (32x32)
+- Player detail popup with front skin view (64x64)
+- Online/offline status
 
-### Система игроков
-- Позиции игроков в реальном времени
-- Маркеры с головами скинов (32x32)
-- Детальная информация об игроке (64x64)
-- Статус онлайн/оффлайн
+### Country System
+- Territory boundary display
+- Unique colors per country
+- Country information popups
+- War status visualization
 
-### Система стран
-- Отображение границ территорий
-- Уникальные цвета для каждой страны
-- Информационные попапы стран
-- Визуализация статуса войн
+### Layer Management
+- Toggle territories on/off
+- Toggle players on/off
+- Toggle wars on/off
+- Settings persistence in localStorage
+
+### Real-time Updates
+- WebSocket connection to backend
+- Live player movement
+- Country changes
+- War status updates
+- Automatic reconnection
+
+## Technology Stack
+
+- **Next.js 14** - React framework with SSR
+- **Leaflet.js** - Interactive map library
+- **Tailwind CSS** - Utility-first CSS framework
+- **Socket.io Client** - WebSocket client
+- **Axios** - HTTP client
+
+## Map Coordinate System
+
+The map uses Minecraft coordinate system:
+- X axis: East/West
+- Z axis: North/South
+- Y axis: Up/Down (not used in 2D map)
+
+Conversion to Leaflet coordinates:
+- Leaflet Lat = -Minecraft Z
+- Leaflet Lng = Minecraft X
