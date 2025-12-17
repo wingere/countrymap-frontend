@@ -221,18 +221,48 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
       const { x, z } = player.location;
       const position = [-z, x]; // Convert Minecraft coords to Leaflet coords
 
-      // Create custom icon with player skin
-      let iconHtml;
-      if (player.skinHeadUrl && player.hasSkin) {
-        iconHtml = `
-          <div class="player-marker pixelated" style="width: 32px; height: 32px; background-image: url('${player.skinHeadUrl}'); background-size: cover; border-radius: 4px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>
-        `;
-      } else {
-        // Default marker
-        iconHtml = `
-          <div class="player-marker" style="width: 32px; height: 32px; background: #8B4513; border-radius: 4px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>
-        `;
-      }
+      // Simple Steve head marker for all players
+      const iconHtml = `
+        <div class="player-marker" style="
+          width: 32px; 
+          height: 32px; 
+          background: linear-gradient(45deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+          border-radius: 6px; 
+          border: 3px solid #fff; 
+          box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+          position: relative;
+          cursor: pointer;
+        ">
+          <div style="
+            position: absolute;
+            top: 6px;
+            left: 8px;
+            width: 4px;
+            height: 4px;
+            background: #000;
+            border-radius: 50%;
+          "></div>
+          <div style="
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 4px;
+            height: 4px;
+            background: #000;
+            border-radius: 50%;
+          "></div>
+          <div style="
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 2px;
+            background: #000;
+            border-radius: 1px;
+          "></div>
+        </div>
+      `;
 
       const customIcon = L.divIcon({
         html: iconHtml,
@@ -244,19 +274,19 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
 
       const marker = L.marker(position, { icon: customIcon });
 
-      // Add popup with player info
+      // Simple popup with player info
       const popupContent = `
-        <div class="p-3 text-center">
-          ${player.skinFrontUrl && player.hasSkin ? 
-            `<img src="${player.skinFrontUrl}" alt="${player.name}" class="pixelated mx-auto mb-3" style="width: 64px; height: 64px;" />` : 
-            `<div class="w-16 h-16 bg-amber-700 mx-auto mb-3 rounded"></div>`
-          }
-          <h3 class="font-bold text-lg mb-2">${player.name}</h3>
-          ${player.country ? `<p><strong>Страна:</strong> ${player.country}</p>` : ''}
-          ${player.isPresident ? `<p class="text-yellow-500 font-semibold">👑 Президент</p>` : ''}
-          <p class="text-sm text-gray-600 mt-2">
-            X: ${Math.round(player.location.x)}, Z: ${Math.round(player.location.z)}
-          </p>
+        <div class="p-4 text-center min-w-[200px]">
+          <div class="w-16 h-16 bg-gradient-to-br from-amber-600 to-amber-800 mx-auto mb-3 rounded-lg border-2 border-amber-400 shadow-lg flex items-center justify-center">
+            <span class="text-2xl">👤</span>
+          </div>
+          <h3 class="font-bold text-xl mb-3 text-gray-800">${player.name}</h3>
+          ${player.country ? `<p class="mb-2"><strong>🏰 Страна:</strong> <span class="text-blue-600">${player.country}</span></p>` : '<p class="mb-2 text-gray-500">Без страны</p>'}
+          ${player.isPresident ? `<p class="text-yellow-600 font-semibold mb-2">👑 Президент</p>` : ''}
+          <div class="text-sm text-gray-600 mt-3 pt-2 border-t border-gray-200">
+            <p><strong>Координаты:</strong></p>
+            <p>X: ${Math.round(player.location.x)}, Z: ${Math.round(player.location.z)}</p>
+          </div>
         </div>
       `;
 
@@ -357,7 +387,7 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
               <span>Территория страны</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-amber-700 rounded border-2 border-white"></div>
+              <div className="w-3 h-3 bg-gradient-to-br from-amber-600 to-amber-800 rounded border-2 border-white"></div>
               <span>Игрок</span>
             </div>
             {serverData?.wars?.length > 0 && (
