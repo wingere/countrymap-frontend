@@ -221,22 +221,17 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
       const { x, z } = player.location;
       const position = [-z, x]; // Convert Minecraft coords to Leaflet coords
 
-      // Create custom icon - стильный цветной маркер
+      // Create custom icon - голова Стива
       const iconHtml = `
-        <div class="player-marker" style="
-          width: 36px; 
-          height: 36px; 
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          border-radius: 50%; 
-          border: 3px solid #fff; 
-          box-shadow: 0 3px 10px rgba(102, 126, 234, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-weight: bold;
-          font-size: 16px;
-        ">${player.name.charAt(0).toUpperCase()}</div>
+        <div class="player-marker pixelated" style="
+          width: 32px; 
+          height: 32px; 
+          background-image: url('https://mc-heads.net/avatar/steve/32');
+          background-size: cover; 
+          border-radius: 4px; 
+          border: 2px solid #fff; 
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        "></div>
       `;
 
       const customIcon = L.divIcon({
