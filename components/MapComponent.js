@@ -23,6 +23,9 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
   });
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [coordinates, setCoordinates] = useState({ x: 0, z: 0 });
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [adminPassword, setAdminPassword] = useState('');
 
   // Initialize map
   useEffect(() => {
@@ -283,10 +286,12 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
           <h3 class="font-bold text-xl mb-3 text-gray-800">${player.name}</h3>
           ${player.country ? `<p class="mb-2"><strong>🏰 Страна:</strong> <span class="text-blue-600">${player.country}</span></p>` : '<p class="mb-2 text-gray-500">Без страны</p>'}
           ${player.isPresident ? `<p class="text-yellow-600 font-semibold mb-2">👑 Президент</p>` : ''}
-          <div class="text-sm text-gray-600 mt-3 pt-2 border-t border-gray-200">
-            <p><strong>Координаты:</strong></p>
-            <p>X: ${Math.round(player.location.x)}, Z: ${Math.round(player.location.z)}</p>
-          </div>
+          ${isAdmin ? `
+            <div class="text-sm text-gray-600 mt-3 pt-2 border-t border-gray-200">
+              <p><strong>Координаты:</strong></p>
+              <p>X: ${Math.round(player.location.x)}, Z: ${Math.round(player.location.z)}</p>
+            </div>
+          ` : ''}
         </div>
       `;
 
@@ -310,6 +315,32 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
     }));
   };
 
+  // Admin login functions
+  const handleAdminLogin = () => {
+    // Simple password check (в реальном проекте используй более безопасную систему)
+    if (adminPassword === 'admin123') {
+      setIsAdmin(true);
+      setShowAdminLogin(false);
+      setAdminPassword('');
+      localStorage.setItem('isAdmin', 'true');
+    } else {
+      alert('Неверный пароль!');
+    }
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdmin(false);
+    localStorage.removeItem('isAdmin');
+  };
+
+  // Check admin status on load
+  useEffect(() => {
+    const adminStatus = localStorage.getItem('isAdmin');
+    if (adminStatus === 'true') {
+      setIsAdmin(true);
+    }
+  }, []);
+
   return (
     <div className={`relative w-full h-full ${className}`}>
       {/* Map Container */}
@@ -331,6 +362,29 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
               Обновлено: {lastUpdate.toLocaleTimeString('ru-RU')}
             </p>
           </div>
+        </div>
+
+        {/* Admin Panel */}
+        <div className="map-control-panel">
+          <h4 className="font-semibold mb-2">Админ-панель</h4>
+          {!isAdmin ? (
+            <button
+              onClick={() => setShowAdminLogin(true)}
+              className="w-full px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+            >
+              Войти как админ
+            </button>
+          ) : (
+            <div className="space-y-2">
+              <div className="text-xs text-green-600 font-semibold">✓ Админ режим</div>
+              <button
+                onClick={handleAdminLogout}
+                className="w-full px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+              >
+                Выйти
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Layer Controls */}
@@ -399,6 +453,44 @@ export default function MapComponent({ serverData, serverStatus, lastUpdate, cla
           </div>
         </div>
       </div>
+
+      {/* Admin Login Modal */}
+      {showAdminLogin && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[2000] flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
+            <h3 className="text-lg font-bold mb-4">Вход для администратора</h3>
+            <input
+              type="password"
+              placeholder="Пароль"
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAdminLogin()}
+              className="w-full px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-none focus:border-blue-500"
+              autoFocus
+            />
+            <div className="flex space-x-2">
+              <button
+                onClick={handleAdminLogin}
+                className="flex-1 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Войти
+              </button>
+              <button
+                onClick={() => {
+                  setShowAdminLogin(false);
+                  setAdminPassword('');
+                }}
+                className="flex-1 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              >
+                Отмена
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mt-3">
+              Только администраторы могут видеть координаты игроков
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
